@@ -1,9 +1,12 @@
 let requisicao = require("readline-sync");
 
 
+
+
 //CLASSES
 class Cliente{
     constructor(nomeClnt, dataAniv, cpfClnt, emailClnt, senhaClnt, IDcliente){
+
         this.IDcliente=IDcliente;
         this.nomeClnt=nomeClnt;
         this.dataAniv=dataAniv;
@@ -12,6 +15,8 @@ class Cliente{
         this.senhaClnt=senhaClnt;
     }
 }
+
+
 
 
 class Reserva{
@@ -34,6 +39,7 @@ class Reserva{
 
 
 
+
 class Funcionario{
     constructor(nomeFunc, cpfFunc, emailFunc, senhaFunc){
         
@@ -43,8 +49,6 @@ class Funcionario{
         this.senhaFunc=senhaFunc;
     }
 }
-
-
 
 
 
@@ -73,22 +77,18 @@ class Quartos{
 
 
 
-
-
-
-
-
-
 //Classe principal onde vou chamar as outras classes e outros metodos
 class Sistema {
     constructor() {
         this.opcao = 0;
+        this.opcao2 = 0;
         this.IDcliente = 0;
         this.clientes = [];
         this.funcionarios = []
     }
 
-    //MENU PRINCIPAL
+
+    //-------MENU PRINCIPAL-------
     mostrarMenu(){
         console.log('');
         console.log('------- Hotel F-Luxo -------');
@@ -110,6 +110,32 @@ class Sistema {
         return opcao;
     }
 
+
+    //-----MENU DO LOG-IN-----
+    mostrarMenu2(){
+        console.log('');
+        console.log('----------------------------------------')
+        console.log('Fazer log-in como:');
+        console.log('1- Cliente');
+        console.log('2- Funcionario');
+        console.log('3- Voltar');
+        console.log('----------------------------------------')
+
+        console.log('');
+        let opcao2 = requisicao.questionInt('Digite a opcao desejada: ');
+        console.log('');
+        return opcao2;
+    }
+
+
+    //---------MENU DO FUNCIONARIO----------
+    mostrarMenu3(){
+        console.log('')
+        
+    }
+
+
+
     main() {
         while (this.opcao != 7) {
 
@@ -117,28 +143,59 @@ class Sistema {
     
           switch (this.opcao) {
             case 1:
-                // Chamar o método da reserva
+                //-------------------
                 break;
+
+            //----------LOG-IN-----------
             case 2:
-                this.loginClnt();
+                while (this.opcao2 != 3){
+
+                    this.opcao2 = this.mostrarMenu2();
+
+                    switch (this.opcao2) {
+                        case 1:
+                            this.loginClnt();
+                            break;
+                        case 2:
+                            this.loginFunc()
+                            break;
+                        case 3:
+                            break;
+                        default:
+                            console.log("Opção inválida! Tente novamente.");
+                            break;
+                    }
+                }
+            break
+                
 
             case 3:
                 console.log('Cadastrar cliente!!!');
                 this.cadastrarClnt();
                 break;
+
+
             case 4:
                 console.log('Cadastrar funcionario!!!!!'); 
                 this.cadastrarFunc();
                 break;
+
+
             case 5:
                 //Estadias Promocionais
                 break;
+
+
             case 6:
                 //---------------------------------------
                 break;
+
+
             case 7:
                 console.log('Obrigada por acessar nosso site! Volte sempre.');
                 break;
+
+
             default:
                 console.log("Opção inválida! Tente novamente.");
                 break
@@ -163,11 +220,26 @@ class Sistema {
 
         this.clientes.push(cliente)
         console.log(this.clientes)
-        
     }
     loginClnt(){
+        console.log('')
+        console.log('Fazendo login como cliente.')
+        console.log('')
+
         let emailLoginClnt = requisicao.question('Digite seu email: '); 
         let senhaLoginClnt = requisicao.question('Digite sua senha: ');
+        let loginValido = false;
+
+        for (let i = 0; i < this.clientes.length; i++) {
+            if (this.clientes[i].email == emailLoginClnt && this.clientes[i].senha == senhaLoginClnt) {
+                console.log('Bem-vindo a sua conta CLIENTE!');
+                loginValido = true;
+                break;
+            } 
+        if (loginValido == false) {
+                console.log('Login incorreto.');
+        }
+        } 
     }
 
 
@@ -189,17 +261,19 @@ class Sistema {
     loginFunc(){
         let emailLoginFunc = requisicao.question('Digite seu email: ');
         let senhaLoginFunc = requisicao.question('Digite sua senha: ');
+        for (let i = 0; i < this.funcionarios.length; i++) {
+            if (this.funcionarios[i].email == emailLoginFunc && this.clientes[i].senha == senhaLoginFunc) {
+                console.log('Bem-vindo a sua conta FUNCIONARIO!');
+                loginValido = true;
+                break;
+            } 
+        if (loginValido == false) {
+                console.log('Login incorreto.');
+        }
+        } 
     }
+
 }
-
-
-
-
-
-
-
-
-
 
 
 let sistema = new Sistema(); 
