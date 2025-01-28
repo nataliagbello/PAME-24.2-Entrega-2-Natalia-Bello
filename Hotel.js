@@ -54,7 +54,7 @@ class Funcionario{
 
 
 //Funcionarios poderao adiconar/remover quartos
-class Quartos{
+class Quarto{
     constructor(numCamas, preco, qntdDisp, nome, descricao){
 
         this.numCamas=numCamas;
@@ -62,15 +62,6 @@ class Quartos{
         this.qntdDisp=qntdDisp;
         this.nome=nome;
         this.descricao=descricao;
-    }
-
-    adicionarQuarto(){
-        let numCamas = requisicao.question('Numero de camas disponiveis no quarto: ');
-        let preco = requisicao.question('Preco por noite: ');
-        let qntdDisp = requisicao.question('Quantidade de quartos disponiveis: ');
-        let nome = requisicao.question('Nome do quarto: ');
-        let descricao = requisicao.question('Descricao do quarto: ');
-        
     }
 }
 
@@ -85,6 +76,7 @@ class Sistema {
         this.IDcliente = 0;
         this.clientes = [];
         this.funcionarios = []
+        this.quartos = []
     }
 
 
@@ -134,6 +126,7 @@ class Sistema {
         console.log('4- Ver lista de clientes.')
         console.log('5- Mudar status de uma reserva.')
         console.log('6- Adicionar quarto.')
+        console.log('7- Voltar.')
 
         console.log('');
         let opcao3 = requisicao.questionInt('Digite a opcao desejada: ');
@@ -150,6 +143,7 @@ class Sistema {
         console.log('4- Fazer reserva.')
         console.log('5- Cancelar reserva.')
         console.log('6- Ver minhas reservas.')
+        console.log('7- Voltar.')
 
         console.log('');
         let opcao4 = requisicao.questionInt('Digite a opcao desejada: ');
@@ -209,7 +203,7 @@ class Sistema {
 
 
 
-//-------------------------------SESSAO CLIENTE----------------------------------------
+//----------------------------------------------------------SESSAO CLIENTE--------------------------------------------------------------------
     cadastrarClnt(){
         let nomeClnt = requisicao.question('Digite seu nome: ');
         let cpfClnt = requisicao.question('Digite seu CPF: ');
@@ -235,7 +229,6 @@ class Sistema {
         let loginValido = false;
 
         for (let i = 0; i < this.clientes.length; i++) {
-            console.log('estou no loop')
             if (this.clientes[i].email == emailLoginClnt && this.clientes[i].senha == senhaLoginClnt) {
                 console.log('Bem-vindo a sua conta CLIENTE!');
                 loginValido = true;
@@ -247,10 +240,66 @@ class Sistema {
         } 
     }
 
+    fazerReserva(){
+        console.log('');
+        console.log('Quartos cadastrados: ');
+        console.log(this.quartos);
+        let nomeQuarto = requisicao.question('Digite o nome do quarto desejado para reservar: ');
+        for (let i = 0; i < this.quartos.length; i++) {
+            if (this.quartos[i].nome == nomeQuarto) {
+                this.quartos.qntdDisp = this.quartos.qntdDisp - 1
+            }
+        }
+    }
+
+    cancelarReserva(){
+        console.log('');
+        console.log('Quartos cadastrados: ');
+        console.log(this.quartos);
+        let nomeQuarto = requisicao.question('Digite o nome do quarto desejado para cancelar: ');
+        for (let i = 0; i < this.quartos.length; i++) {
+            if (this.quartos[i].nome == nomeQuarto) {
+                this.quartos.qntdDisp = this.quartos.qntdDisp + 1
+            }
+        }
+    }
+
+    //Funcao principal do cliente
+    mainClnt(){
+        while (this.opcao4 != 6) {
+
+            this.opcao4 = this.mostrarMenu4();
+            switch (this.opcao4) {
+                case 1:
+                    //Ver meus dados
+                    break;
+                case 2:
+                    console.log('');
+                    console.log('Lista de quartos cadastrados:');
+                    console.log(this.quartos);
+                    break;
+                case 3:
+                    fazerReserva();
+                    break;
+                case 4:
+                    this.cancelarReserva()
+                    break;
+                case 5:
+                    //Ver minhas reservas
+                    break;
+                case 6:
+                    break;
+                default:
+                    console.log("Opção inválida! Tente novamente.");
+                    break;
+            }
+        }
+    }
 
 
 
-//-------------------------------SESSAO FUNCIONARIO----------------------------------------
+
+//----------------------------------------------------------------SESSAO FUNCIONARIO---------------------------------------------------------------------
     cadastrarFunc(){
         let nomeFunc = requisicao.question('Digite seu nome: ');
         let cpfFunc = requisicao.question('Digite seu CPF: ');
@@ -258,11 +307,16 @@ class Sistema {
         let senhaFunc = requisicao.question('Digite uma senha: ');
 
         const funcionario = new Funcionario(nomeFunc, cpfFunc, emailFunc, senhaFunc);
+        console.log('');
+        console.log('Funcionario adicionado: ');
         console.log(funcionario);
 
         this.funcionarios.push(funcionario);
+        console.log('');
+        console.log('Lista de funcionários cadastrados:');
         console.log(this.funcionarios);
     }
+    
     loginFunc(){
         let emailLoginFunc = requisicao.question('Digite seu email: ');
         let senhaLoginFunc = requisicao.question('Digite sua senha: ');
@@ -270,7 +324,7 @@ class Sistema {
             if (this.funcionarios[i].email == emailLoginFunc && this.clientes[i].senha == senhaLoginFunc) {
                 console.log('Bem-vindo a sua conta FUNCIONARIO!');
                 loginValido = true;
-                
+                this.mainFunc(); //Chamando main funcionario  
                 break;
             } 
         }
@@ -279,13 +333,63 @@ class Sistema {
         } 
     }
 
-    sistemaFunc(){
-        
+
+    adicionarQuarto(){
+        let numCamas = requisicao.question('Digite o numero de camas: ');
+        let preco = requisicao.question('Digite o preco da diaria: ');
+        let qntdDisp = requisicao.question('Digite a quantidade disponivel: ');
+        let nome = requisicao.question('Digite o nome do quarto: ');
+        let descricao = requisicao.question('Digite uma breve descricao do quarto: ');
+
+        const quarto = new Quarto(numCamas, preco, qntdDisp, nome, descricao);
+        console.log('');
+        console.log('Quarto adicionado:');
+        console.log(quarto);
+
+        this.quartos.push(quarto);
+        console.log('');
+        console.log('Lista de quartos cadastrados:');
+        console.log(this.quartos);
     }
+    
 
+    //Funcao principal do funcionario
+    mainFunc(){
+        while (this.opcao3 != 7) {
 
+            this.opcao3 = this.mostrarMenu3();
+            switch (this.opcao3) {
+                case 1:
+                    //Ver meus dados
+                    break;
+                case 2:
+                    //Ver lista reservas
+                    break;
+                case 3:
+                    console.log('');
+                    console.log('Lista de quartos cadastrados:');
+                    console.log(this.quartos);
+                    break;
+                case 4:
+                    console.log('');
+                    console.log('Lista de clientes cadastrados:');
+                    console.log(this.clientes);
+                    break;
+                case 5:
+                    //Mudar status de uma reserva
+                    break;
+                case 6:
+                    this.adicionarQuarto();
+                    break;
+                case 7:
+                    break;
+                default:
+                    console.log("Opção inválida! Tente novamente.");
+                    break;
+            }
+        }
+    }
 }
-
 
 let sistema = new Sistema(); 
 sistema.main();
