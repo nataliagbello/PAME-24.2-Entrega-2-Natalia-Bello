@@ -95,13 +95,10 @@ class Sistema {
         console.log('');
         console.log('Seja bem-vindo(a) ao site oficial do Hotel F-Luxo, \nonde a experiência da sua hospedagem é a nossa prioridade.');
         console.log('');
-        console.log('1- Fazer uma reserva.');
-        console.log('2- Fazer log-in.');
-        console.log('3- Fazer cadastro cliente.');
-        console.log('4- Fazer cadastro funcionario.');
-        console.log('5- Estadias Promocionais.');
-        console.log('6- Informações adicionais.');
-        console.log('7- Sair.');
+        console.log('1- Fazer login.');
+        console.log('2- Fazer cadastro cliente.');
+        console.log('3- Fazer cadastro funcionario.');
+        console.log('4- Sair.');
         
 
         console.log('');
@@ -131,9 +128,34 @@ class Sistema {
     //---------MENU DO FUNCIONARIO----------
     mostrarMenu3(){
         console.log('')
-        
+        console.log('1- Ver meus dados.')
+        console.log('2- Ver lista de reservas.')
+        console.log('3- Ver lista de quartos.')
+        console.log('4- Ver lista de clientes.')
+        console.log('5- Mudar status de uma reserva.')
+        console.log('6- Adicionar quarto.')
+
+        console.log('');
+        let opcao3 = requisicao.questionInt('Digite a opcao desejada: ');
+        console.log('');
+        return opcao3;
     }
 
+
+    //---------MENU DO CLIENTE----------
+    mostrarMenu4(){
+        console.log('')
+        console.log('1- Ver meus dados.')
+        console.log('2- Ver lista de quartos.')
+        console.log('4- Fazer reserva.')
+        console.log('5- Cancelar reserva.')
+        console.log('6- Ver minhas reservas.')
+
+        console.log('');
+        let opcao4 = requisicao.questionInt('Digite a opcao desejada: ');
+        console.log('');
+        return opcao4;
+    }
 
 
     main() {
@@ -142,12 +164,8 @@ class Sistema {
           this.opcao = this.mostrarMenu();
     
           switch (this.opcao) {
-            case 1:
-                //-------------------
-                break;
-
             //----------LOG-IN-----------
-            case 2:
+            case 1:
                 while (this.opcao2 != 3){
 
                     this.opcao2 = this.mostrarMenu2();
@@ -168,33 +186,19 @@ class Sistema {
                 }
             break
                 
-
-            case 3:
+            case 2:
                 console.log('Cadastrar cliente!!!');
                 this.cadastrarClnt();
                 break;
 
-
-            case 4:
+            case 3:
                 console.log('Cadastrar funcionario!!!!!'); 
                 this.cadastrarFunc();
                 break;
 
-
-            case 5:
-                //Estadias Promocionais
-                break;
-
-
-            case 6:
-                //---------------------------------------
-                break;
-
-
-            case 7:
+            case 4:
                 console.log('Obrigada por acessar nosso site! Volte sempre.');
                 break;
-
 
             default:
                 console.log("Opção inválida! Tente novamente.");
@@ -231,14 +235,15 @@ class Sistema {
         let loginValido = false;
 
         for (let i = 0; i < this.clientes.length; i++) {
+            console.log('estou no loop')
             if (this.clientes[i].email == emailLoginClnt && this.clientes[i].senha == senhaLoginClnt) {
                 console.log('Bem-vindo a sua conta CLIENTE!');
                 loginValido = true;
                 break;
             } 
+        }
         if (loginValido == false) {
                 console.log('Login incorreto.');
-        }
         } 
     }
 
@@ -265,13 +270,19 @@ class Sistema {
             if (this.funcionarios[i].email == emailLoginFunc && this.clientes[i].senha == senhaLoginFunc) {
                 console.log('Bem-vindo a sua conta FUNCIONARIO!');
                 loginValido = true;
+                
                 break;
             } 
+        }
         if (loginValido == false) {
                 console.log('Login incorreto.');
-        }
         } 
     }
+
+    sistemaFunc(){
+        
+    }
+
 
 }
 
